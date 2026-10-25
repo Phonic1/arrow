@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Directions — Interactive Arrows</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{font-family:Poppins,Arial,sans-serif;color:#101010;background:#fff;--border:clamp(4px,.55vw,9px)}
+*{box-sizing:border-box}body{margin:0;min-height:100dvh;overflow:hidden;background:white}
+.app{width:100%;height:100dvh;display:flex;flex-direction:column;padding:clamp(8px,1.5vw,20px)}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex:none;min-height:40px}
+.heading{font-size:clamp(14px,1.3vw,20px);font-weight:600;color:#4c5561;margin:0}
+.controls{display:flex;gap:8px;align-items:center}
+.smallbtn{font:600 clamp(12px,1vw,16px) Poppins,Arial,sans-serif;border:2px solid #e0e4ea;background:#fff;border-radius:14px;padding:8px 12px;cursor:pointer;color:#20252a}
+.smallbtn:hover{background:#f3f5f8}.smallbtn:focus-visible,.arrow:focus-visible{outline:5px solid #673ab7;outline-offset:4px}
+.stage{flex:1;min-height:0;display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:1fr 1fr 1fr;gap:clamp(4px,.8vmin,14px);place-items:stretch;max-width:min(100%,140vh);width:100%;margin:auto;padding:clamp(4px,.5vh,10px)}
+.arrow{appearance:none;border:0;background:transparent;padding:0;position:relative;cursor:pointer;min-width:0;min-height:0;display:flex;align-items:center;justify-content:center;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.arrow svg{width:100%;height:100%;overflow:visible;filter:drop-shadow(0 3px 1px rgba(0,0,0,.04));transition:transform .12s ease,filter .12s ease}
+.arrow:active svg,.arrow.playing svg{transform:scale(.94);filter:drop-shadow(0 0 15px rgba(0,0,0,.13))}
+.arrow span{position:absolute;z-index:2;font-size:clamp(15px,2.65vw,46px);font-weight:800;letter-spacing:-.035em;line-height:1.1;pointer-events:none;white-space:nowrap}
+.forward{grid-column:2;grid-row:1}.left{grid-column:1;grid-row:2}.right{grid-column:3;grid-row:2}.backwards{grid-column:2;grid-row:3}
+.forward span,.backwards span{font-size:clamp(15px,2.25vw,42px)}
+svg path{stroke:#101010;stroke-width:5;stroke-linejoin:round;stroke-linecap:round}
+.status{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);font-size:12px;color:#677080;pointer-events:none;text-align:center}
+@media(max-aspect-ratio:9/10){.stage{max-width:100%;gap:1px}.arrow span{font-size:clamp(13px,3.6vw,27px)}.forward span,.backwards span{font-size:clamp(12px,3.2vw,26px)}.heading{font-size:13px}.smallbtn{padding:6px 9px}}
+@media(max-height:450px){.topbar{min-height:30px}.smallbtn{padding:3px 9px}.status{display:none}}
+@media(prefers-reduced-motion:reduce){.arrow svg{transition:none}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="topbar"><h1 class="heading">Choose a direction</h1><div class="controls"><button class="smallbtn" id="replay" title="Repeat last direction">↻ Repeat</button><button class="smallbtn" id="full" title="Toggle full-screen">⛶ Full screen</button></div></header>
+<main class="stage" aria-label="Four spoken direction buttons">
+<button class="arrow forward" data-say="Forward" aria-label="Speak Forward"><svg viewBox="0 0 200 200" preserveAspectRatio="none" aria-hidden="true"><path fill="#5cde35" d="M100 5 Q96 5 92 9 L10 87 Q3 95 10 102 Q13 106 21 106 L44 106 L44 181 Q44 194 57 194 L143 194 Q156 194 156 181 L156 106 L179 106 Q187 106 190 102 Q197 95 190 87 L108 9 Q104 5 100 5 Z"/></svg><span>Forward</span></button>
+<button class="arrow left" data-say="Left" aria-label="Speak Left"><svg viewBox="0 0 200 200" preserveAspectRatio="none" aria-hidden="true"><path fill="#ffe420" d="M5 100 Q5 96 9 92 L87 10 Q95 3 102 10 Q106 13 106 21 L106 44 L181 44 Q194 44 194 57 L194 143 Q194 156 181 156 L106 156 L106 179 Q106 187 102 190 Q95 197 87 190 L9 108 Q5 104 5 100 Z"/></svg><span>Left</span></button>
+<button class="arrow right" data-say="Right" aria-label="Speak Right"><svg viewBox="0 0 200 200" preserveAspectRatio="none" aria-hidden="true"><path fill="#26a9f4" d="M195 100 Q195 96 191 92 L113 10 Q105 3 98 10 Q94 13 94 21 L94 44 L19 44 Q6 44 6 57 L6 143 Q6 156 19 156 L94 156 L94 179 Q94 187 98 190 Q105 197 113 190 L191 108 Q195 104 195 100 Z"/></svg><span>Right</span></button>
+<button class="arrow backwards" data-say="Backwards" aria-label="Speak Backwards"><svg viewBox="0 0 200 200" preserveAspectRatio="none" aria-hidden="true"><path fill="#ff3b49" d="M100 195 Q96 195 92 191 L10 113 Q3 105 10 98 Q13 94 21 94 L44 94 L44 19 Q44 6 57 6 L143 6 Q156 6 156 19 L156 94 L179 94 Q187 94 190 98 Q197 105 190 113 L108 191 Q104 195 100 195 Z"/></svg><span>Backwards</span></button>
+</main>
+<div id="status" class="status" role="status" aria-live="polite"></div>
+</div>
+<script>
+(()=>{
+const buttons=[...document.querySelectorAll('.arrow')],status=document.getElementById('status');let last='';let voice=null;
+function pickVoice(){const voices=speechSynthesis.getVoices();voice=voices.find(v=>v.lang.toLowerCase()==='en-au'&&/female|karen|catherine|natasha/i.test(v.name))||voices.find(v=>v.lang.toLowerCase()==='en-au')||voices.find(v=>v.lang.toLowerCase().startsWith('en'))||null;}
+if('speechSynthesis' in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice;}else status.textContent='Speech playback is not supported in this browser.';
+function speak(word){last=word;buttons.forEach(b=>b.classList.toggle('playing',b.dataset.say===word));if(!('speechSynthesis' in window))return;speechSynthesis.cancel();const utterance=new SpeechSynthesisUtterance(word);utterance.lang='en-AU';utterance.rate=.78;utterance.pitch=1;utterance.volume=1;if(voice)utterance.voice=voice;utterance.onend=utterance.onerror=()=>buttons.forEach(b=>b.classList.remove('playing'));speechSynthesis.speak(utterance);}
+buttons.forEach(b=>b.addEventListener('click',()=>speak(b.dataset.say)));
+document.getElementById('replay').addEventListener('click',()=>last&&speak(last));
+const full=document.getElementById('full');full.addEventListener('click',async()=>{try{if(!document.fullscreenElement){await document.documentElement.requestFullscreen();}else{await document.exitFullscreen();}}catch(e){status.textContent='Full-screen is unavailable in this browser.';}});
+document.addEventListener('fullscreenchange',()=>full.textContent=document.fullscreenElement?'⤢ Exit full screen':'⛶ Full screen');
+document.addEventListener('keydown',e=>{const keys={ArrowUp:'Forward',ArrowDown:'Backwards',ArrowLeft:'Left',ArrowRight:'Right'};if(keys[e.key]){e.preventDefault();speak(keys[e.key]);}});
+})();
+</script>
+</body></html>
